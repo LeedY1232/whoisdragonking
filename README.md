@@ -13,3 +13,8 @@
 # git push origin newbranchname
 
 最后在github上merge
+
+
+# pip install Djangorestframework
+
+# pip install mysqlclient
