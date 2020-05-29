@@ -18,7 +18,7 @@ class HouseSerializer(serializers.ModelSerializer):
 class PunishCardSerializer(serializers.ModelSerializer):
     class Meta:
         model = PunishCard
-        fields = ('id','content','level','kind')
+        fields = ('id','content','level','kind','is_front','gender')
 
 class PunishChooseSerializer(serializers.ModelSerializer):
     class Meta:

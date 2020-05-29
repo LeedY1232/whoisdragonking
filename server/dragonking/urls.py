@@ -9,4 +9,6 @@ router.register('PunishCard', views.PunishCardView)
 router.register('PunishChoose', views.PunishChooseView)
 urlpatterns = [
     path('', include(router.urls)),
+    path(r'punishCardIndex/',views.punishCardIndex),
+    path(r'punishCardIndexAllVersion/',views.punishCardIndexAllVersion),
 ]
