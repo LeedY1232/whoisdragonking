@@ -166,4 +166,4 @@ def punishCardIndexAllVersion(request):
     for card in card_list_for_challenge:
         card_serializer = PunishCardSerializer(card)
         challenge_card_list.append(card_serializer.data)
-    return JsonResponse({'truth': truth_card_list, 'challenge': challenge_card_list})
+    return JsonResponse({'code':'1','truth_length':len(card_list_for_truth), 'truth': truth_card_list, 'challenge': challenge_card_list})
