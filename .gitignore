@@ -8,4 +8,6 @@ client/
 
 *.zip
 
+server/server/settings.py
+
 *.txt

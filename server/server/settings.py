@@ -80,10 +80,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'dragonking',
-        'USER':'ldy',
-        'PASSWORD':'Ldy991205',
-        'HOST':'127.0.0.1',
-        'PORT':3306,
+        'USER':'root',
+        'PASSWORD':'root',
         'EST_CHARSET':'utf8',
     }
 }

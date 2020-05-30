@@ -10,9 +10,6 @@ class User(models.Model):
     if_ready = models.BooleanField(default=False)
     if_house_owner = models.BooleanField(default=False)
     if_being_punished = models.BooleanField(default=False)
-
-
-class HouseUser():
     
 
 class House(models.Model):
