@@ -7,13 +7,15 @@ class User(models.Model):
     openid = models.CharField(primary_key=True, max_length=100)
     #house_id = models.ForeignKey('House',blank =True, on_delete=models.CASCADE)
     if_inhouse = models.BooleanField(default=False)
-    if_ready = models.BooleanField(default=False)
+    if_ready = models.BooleanField(default=True)
     if_house_owner = models.BooleanField(default=False)
     if_being_punished = models.BooleanField(default=False)
 
 
 class HouseUser():
-    
+    house_id = models.ForeignKey('House',on_delete=models.CASCADE)
+    user_openid = models.ForeignKey('User',on_delete=models.CASCADE)
+
 
 class House(models.Model):
     GENDER_LIST = (
@@ -21,9 +23,9 @@ class House(models.Model):
         (2, 'girls\' party'),
         (3, 'mixed party'),
     )
-    people_number = models.CharField(max_length=20)
+    house_id = models.IntegerField(primary_key=True)
     house_owner = models.ForeignKey('User', on_delete=models.CASCADE)
-    gender_kind = models.IntegerField(default=1, choices=GENDER_LIST)
+    gender_kind = models.IntegerField(default=3, choices=GENDER_LIST)
 
 
 class PunishCard(models.Model):
@@ -44,7 +46,7 @@ class PunishCard(models.Model):
     )
     content = models.CharField(default='', max_length=300)
     is_front = models.BooleanField(default=False)
-    level = models.CharField(default='one', max_length=10, choices=LEVEL_LIST)
+    level = models.CharField(default=1, max_length=10, choices=LEVEL_LIST)
     kind = models.CharField(default='truth', max_length=20, choices=KIND_LIST)
     gender = models.IntegerField(default=1, choices=GENDER_LIST)
 
