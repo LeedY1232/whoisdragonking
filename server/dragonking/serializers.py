@@ -3,17 +3,23 @@ from .models import User
 from .models import House
 from .models import PunishCard
 from .models import PunishChoose
+from .models import HouseUser
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('openid','house_id','if_inhouse','if_ready',
+        fields = ('openid','if_inhouse','if_ready',
                     'if_house_owner','if_being_punished')
 
 class HouseSerializer(serializers.ModelSerializer):
     class Meta:
         model = House
-        fields = ('id','people_number','house_owner')
+        fields = ('house_id','house_owner')
+
+class HouseUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = HouseUser
+        fields = ('id','house_id','user_openid')
 
 class PunishCardSerializer(serializers.ModelSerializer):
     class Meta:
@@ -23,4 +29,4 @@ class PunishCardSerializer(serializers.ModelSerializer):
 class PunishChooseSerializer(serializers.ModelSerializer):
     class Meta:
         model = PunishChoose
-        fields = ('id','user_openid','card_id','if_change','punish_or_challenge')
+        fields = ('id','user_openid','card_id','if_change')

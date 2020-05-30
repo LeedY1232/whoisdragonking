@@ -7,6 +7,8 @@ router.register('User', views.UserView)
 router.register('House', views.HouseView)
 router.register('PunishCard', views.PunishCardView)
 router.register('PunishChoose', views.PunishChooseView)
+router.register('HouseUser', views.HouseUserView)
+
 urlpatterns = [
     path('', include(router.urls)),
     path(r'punishCardIndex/',views.punishCardIndex),
