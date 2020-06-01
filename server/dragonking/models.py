@@ -18,8 +18,6 @@ class User(models.Model):
 
     if_ready = models.BooleanField(default=True)
 
-    if_house_owner = models.BooleanField(default=False)
-
     if_being_punished = models.BooleanField(default=False)
 
 
@@ -91,13 +89,9 @@ class PunishCard(models.Model):
     )
 
     content = models.CharField(default='', max_length=300)
-
-    is_front = models.BooleanField(default=False)
-
     level = models.CharField(default=1, max_length=10, choices=LEVEL_LIST)
-
     kind = models.CharField(default='truth', max_length=20, choices=KIND_LIST)
-
+    is_front = models.BooleanField(default=False)
     gender = models.IntegerField(default=1, choices=GENDER_LIST)
 
 

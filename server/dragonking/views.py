@@ -45,16 +45,7 @@ class HouseUserView(viewsets.ModelViewSet):
 
 
 def userLogin(request):
-    code = request.GET.get("code")
-    wxurl = 'https://api.weixin.qq.com/sns/jscode2session'
-    data = {
-        'appid': 'wx7e7fa404e4354e31',
-        'secret': 'dc2ea423bf466b6c63c8acdde1b8e3f2',
-        'js_code': code,
-        'grant_type': 'authorization_code',
-    }
-    wxres = requests.post(wxurl, data=data)
-    user_openid = json.loads(wxres.text)['openid']
+    user_openid = request.GET.get("openid")
     saved_user = User.objects.filter(openid=user_openid).first()
     text_content = dict()
     if not saved_user:
@@ -62,9 +53,11 @@ def userLogin(request):
         new_user.save()
         text_content['openid'] = new_user.openid
         text_content['newuser'] = 1
+        
     else:
         text_content['openid'] = saved_user.openid
         text_content['newuser'] = 0
+    text_content['message'] = 'success'
     return HttpResponse(json.dumps(text_content, ensure_ascii=False), content_type="application/json")
 
 
@@ -72,7 +65,6 @@ def buildHouse(request):  # 获取创建人openid，返回房间id号
     openid = request.GET.get('openid')
     user = User.objects.filter(openid=openid).first()
     user.if_inhouse = True
-    user.if_house_owner = True
     house_id = random.randint(100000, 999999)
     while len(House.objects.filter(house_id=house_id)) != 0:
         house_id = random.randint(100000, 999999)
@@ -87,7 +79,7 @@ def joinHouse(request):
     house_id = request.GET.get('house_id')
     user_obj = User.objects.filter(openid=openid).first()
     house_obj = House.objects.filter(house_id=int(house_id)).first()
-    new_houseuser_obj = HouseUser.objects.create(user_id = user_obj,house_id = house_obj)
+    new_houseuser_obj = HouseUser.objects.create(user_openid = user_obj,house_id = house_obj)
     user_obj.if_inhouse = True
     user_obj.save()
     new_houseuser_obj.save()
@@ -139,17 +131,17 @@ def leaveHouse(request):  # 用户离开房间
     house_id = request.GET.get('house_id')
     house_obj = House.objects.filter(house_id=house_id).first()
     user_id = request.GET.get('openid')
-    user_obj = User.objects.filter(openid=owner_id).first()
+    user_obj = User.objects.filter(openid=user_id).first()
     user_obj.if_inhouse = False
     user_obj.if_ready = False
-    this_houseuser_obj = HouseUser.objects.filter(house_id=house_obj,user_id=user_obj)
+    this_houseuser_obj = HouseUser.objects.filter(house_id=house_obj,user_openid=user_obj)
     this_houseuser_obj.delete()
     if user_obj == house_obj.house_owner:  # 如果用户是房主的话，则退回初始状态
-        user_obj.if_house_owner = False
-        houseuser_list = HouseUser.objects.filter(house_id=house_obj)
-        if len(houseuser_list) !=0:
-            for houseuser_obj in houseuser_list:
-                houseuser_obj.delete()
+      #  user_obj.if_house_owner = False
+       # houseuser_list = HouseUser.objects.filter(house_id=house_obj)
+        #if len(houseuser_list) !=0:
+         #   for houseuser_obj in houseuser_list:
+          #      houseuser_obj.delete()
         house_obj.delete()
     user_obj.save()
     return JsonResponse({'code': '1', 'message': '退出成功'})
@@ -166,4 +158,19 @@ def punishCardIndexAllVersion(request):
     for card in card_list_for_challenge:
         card_serializer = PunishCardSerializer(card)
         challenge_card_list.append(card_serializer.data)
-    return JsonResponse({'code':'1','truth_length':len(card_list_for_truth), 'truth': truth_card_list, 'challenge': challenge_card_list})
+
+    return JsonResponse({'code':'1', 'truth': truth_card_list, 'challenge': challenge_card_list})
+
+def userInfoaboutHouse(request):
+    house_id = request.GET.get('house_id')
+    house_obj = House.objects.filter(house_id = house_id).first()
+    users = HouseUser.objects.filter(house_id = house_obj)  
+    content_text = []
+    if len(users) != 0:
+    	for user in users:
+            user_serializer = UserSerializer(user.user_openid)
+            content_text.append(user_serializer.data)
+    else:
+       pass
+    content_text.append(house_id)
+    return JsonResponse({'code':1,'content':content_text})

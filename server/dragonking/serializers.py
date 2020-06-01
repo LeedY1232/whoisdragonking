@@ -9,7 +9,7 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ('openid','if_inhouse','if_ready',
-                    'if_house_owner','if_being_punished')
+                    'if_being_punished')
 
 class HouseSerializer(serializers.ModelSerializer):
     class Meta:

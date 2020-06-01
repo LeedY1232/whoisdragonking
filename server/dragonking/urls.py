@@ -11,6 +11,15 @@ router.register('HouseUser', views.HouseUserView)
 
 urlpatterns = [
     path('', include(router.urls)),
+    path(r'userLogin/',views.userLogin),
+    path(r'buildHouse/',views.buildHouse),
+    path(r'joinHouse/',views.joinHouse),
+    path(r'userGetReady/',views.userGetReady),
+    path(r'startGame/',views.startGame),
     path(r'punishCardIndex/',views.punishCardIndex),
+    path(r'choosePunish/',views.choosePunish),
+    path(r'leaveHouse/',views.leaveHouse),
     path(r'punishCardIndexAllVersion/',views.punishCardIndexAllVersion),
+    path(r'userInfoaboutHouse/',views.userInfoaboutHouse),
 ]
+
