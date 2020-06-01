@@ -12,8 +12,6 @@ class User(models.Model):
 
     openid = models.CharField(primary_key=True, max_length=100)
 
-    #house_id = models.ForeignKey('House',blank =True, on_delete=models.CASCADE)
-
     if_inhouse = models.BooleanField(default=False)
 
     if_ready = models.BooleanField(default=True)
