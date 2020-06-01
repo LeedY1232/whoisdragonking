@@ -21,5 +21,8 @@ urlpatterns = [
     path(r'leaveHouse/',views.leaveHouse),
     path(r'punishCardIndexAllVersion/',views.punishCardIndexAllVersion),
     path(r'userInfoaboutHouse/',views.userInfoaboutHouse),
+    path(r'showPunishedStatusforOthers/',views.showPunishedStatusforOthers),
+    path(r'changePunish/',views.changePunish),
+    path(r'acceptPunish/',views.acceptPunish),
 ]
 

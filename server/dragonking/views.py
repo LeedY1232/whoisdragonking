@@ -53,7 +53,7 @@ def userLogin(request):
         new_user.save()
         text_content['openid'] = new_user.openid
         text_content['newuser'] = 1
-        
+
     else:
         text_content['openid'] = saved_user.openid
         text_content['newuser'] = 0
@@ -79,7 +79,8 @@ def joinHouse(request):
     house_id = request.GET.get('house_id')
     user_obj = User.objects.filter(openid=openid).first()
     house_obj = House.objects.filter(house_id=int(house_id)).first()
-    new_houseuser_obj = HouseUser.objects.create(user_openid = user_obj,house_id = house_obj)
+    new_houseuser_obj = HouseUser.objects.create(
+        user_openid=user_obj, house_id=house_obj)
     user_obj.if_inhouse = True
     user_obj.save()
     new_houseuser_obj.save()
@@ -102,7 +103,7 @@ def startGame(request):
     return JsonResponse({'code': '1', 'message': '游戏开始'})
 
 
-def punishCardIndex(request):
+def punishCardIndex(request): # 提供6个惩罚
     # candidate values： truth or challenge
     punish_way = request.GET.get('way_for_punishing')
     card_list = PunishCard.objects.filter(kind=punish_way)
@@ -115,10 +116,11 @@ def punishCardIndex(request):
     return JsonResponse({'punish_card_index': card_index})
 
 
-def choosePunish(request):
+def choosePunish(request): # 用户选择惩罚
     punished_openid = request.GET.get('openid')
     user_obj = User.objects.filter(openid=punished_openid).first()
     user_obj.if_being_punished = True  # 变更状态为处罚状态
+    user_obj.save()
     punish_card_id = request.GET.get('card_id')
     card_obj = PunishCard.objects.filter(id=punish_card_id).first()
     new_punishment = PunishChoose.objects.create(
@@ -127,6 +129,32 @@ def choosePunish(request):
     return JsonResponse({'code': '1', 'message': '选择惩罚成功'})
 
 
+def changePunish(request): 
+    # 用户更换惩罚 参传过来 再传回去。其实不用回传数据也行，这个函数作用在于修改数据库内容，使得其他玩家同步看到他的更改
+    punished_openid = request.GET.get('openid')
+    user_obj = User.objects.filter(openid=punished_openid).first()
+    changed_card_id = request.GET.get('card_id')
+    punishchoose_obj = PunishChoose.objects.filter(user_openid=user_obj).first()
+    changed_card_obj = PunishCard.objects.filter(id=changed_card_id).first()
+    punishchoose_obj.card_id = changed_card_obj
+    punishchoose_obj.if_change = True
+    punishchoose_obj.save()
+    punishchoose_message = dict()
+    punishchoose_message['punished_user_id'] = punished_openid
+    punishchoose_message['punished_card_id'] = changed_card_id
+    return JsonResponse({'code':'1', 'punishchoose_message':punishchoose_message})
+
+
+def acceptPunish(request):
+    # 建议加上已完成的按钮，作为调用此请求的触发
+    punished_openid = request.GET.get('openid')
+    user_obj = User.objects.filter(openid=punished_openid).first()
+    punishchoose_obj = PunishChoose.objects.filter(user_openid=user_obj).first()
+    punishchoose_obj.delete()
+    user_obj.if_being_punished = False # 用户恢复状态
+    user_obj.save()
+    return JsonResponse({'code':'1','message':'用户接受了这一惩罚，进入下一轮'})
+
 def leaveHouse(request):  # 用户离开房间
     house_id = request.GET.get('house_id')
     house_obj = House.objects.filter(house_id=house_id).first()
@@ -134,14 +162,10 @@ def leaveHouse(request):  # 用户离开房间
     user_obj = User.objects.filter(openid=user_id).first()
     user_obj.if_inhouse = False
     user_obj.if_ready = False
-    this_houseuser_obj = HouseUser.objects.filter(house_id=house_obj,user_openid=user_obj)
+    this_houseuser_obj = HouseUser.objects.filter(
+        house_id=house_obj, user_openid=user_obj)
     this_houseuser_obj.delete()
     if user_obj == house_obj.house_owner:  # 如果用户是房主的话，则退回初始状态
-      #  user_obj.if_house_owner = False
-       # houseuser_list = HouseUser.objects.filter(house_id=house_obj)
-        #if len(houseuser_list) !=0:
-         #   for houseuser_obj in houseuser_list:
-          #      houseuser_obj.delete()
         house_obj.delete()
     user_obj.save()
     return JsonResponse({'code': '1', 'message': '退出成功'})
@@ -159,18 +183,43 @@ def punishCardIndexAllVersion(request):
         card_serializer = PunishCardSerializer(card)
         challenge_card_list.append(card_serializer.data)
 
-    return JsonResponse({'code':'1', 'truth': truth_card_list, 'challenge': challenge_card_list})
+    return JsonResponse({'code': '1', 'truth': truth_card_list, 'challenge': challenge_card_list})
+
 
 def userInfoaboutHouse(request):
     house_id = request.GET.get('house_id')
-    house_obj = House.objects.filter(house_id = house_id).first()
-    users = HouseUser.objects.filter(house_id = house_obj)  
+    house_obj = House.objects.filter(house_id=house_id).first()
+    users = HouseUser.objects.filter(house_id=house_obj)
     content_text = []
     if len(users) != 0:
-    	for user in users:
+        for user in users:
             user_serializer = UserSerializer(user.user_openid)
             content_text.append(user_serializer.data)
     else:
-       pass
+        pass
     content_text.append(house_id)
-    return JsonResponse({'code':1,'content':content_text})
+    return JsonResponse({'code': 1, 'content': content_text})
+
+
+def showPunishedStatusforOthers(request):
+    # 呈现状态为惩罚状态的用户信息及选择的惩罚卡片内容，同步给其他用户
+    house_id = request.GET.get('house_id')
+    house_obj = House.objects.filter(house_id=house_id).first()
+    houseuser_objs = HouseUser.objects.filter(house_id=house_obj)
+    punishuser_info = dict()
+    temp = 0
+    if len(houseuser_objs) != 0:
+        for houseuser_obj in houseuser_objs:
+            if houseuser_obj.user_openid.if_being_punished:
+                card_serializer = PunishCardSerializer(houseuser_obj.card_id)
+                punishuser_info['card_info'] = card_serializer.data
+                punishuser_info['user_openid'] = houseuser_obj.user_openid.openid
+            else:
+                temp+=1
+        if temp == len(houseuser_objs):
+            punishuser_info['card_id'] = None
+            punishuser_info['user_openid'] = None
+    else:
+        punishuser_info['card_id'] = None
+        punishuser_info['user_openid'] = None
+    return JsonResponse({'code':'1','punishuser_info':punishuser_info})
