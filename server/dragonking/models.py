@@ -12,6 +12,10 @@ class User(models.Model):
 
     openid = models.CharField(primary_key=True, max_length=100)
 
+    nick_name = models.CharField(max_length=100)
+
+    head_pic = models.ImageField(upload_to='uploads/')
+
     if_inhouse = models.BooleanField(default=False)
 
     if_ready = models.BooleanField(default=True)
