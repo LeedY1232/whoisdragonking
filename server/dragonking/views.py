@@ -172,8 +172,9 @@ def leaveHouse(request):  # 用户离开房间
 
 
 def punishCardIndexAllVersion(request):
-    card_list_for_truth = PunishCard.objects.filter(kind='truth')
-    card_list_for_challenge = PunishCard.objects.filter(kind='challenge')
+    gender = request.GET.get('gameType')
+    card_list_for_truth = PunishCard.objects.filter(kind='truth',gender=int(gender))
+    card_list_for_challenge = PunishCard.objects.filter(kind='challenge',gender=int(gender))
     truth_card_list = []
     challenge_card_list = []
     for card in card_list_for_truth:
@@ -182,7 +183,6 @@ def punishCardIndexAllVersion(request):
     for card in card_list_for_challenge:
         card_serializer = PunishCardSerializer(card)
         challenge_card_list.append(card_serializer.data)
-
     return JsonResponse({'code': '1', 'truth': truth_card_list, 'challenge': challenge_card_list})
 
 
