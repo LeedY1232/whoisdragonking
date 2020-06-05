@@ -8,7 +8,7 @@ from .models import HouseUser
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('openid','if_inhouse','if_ready',
+        fields = ('openid','nick_name','head_pic','if_inhouse','if_ready',
                     'if_being_punished')
 
 class HouseSerializer(serializers.ModelSerializer):

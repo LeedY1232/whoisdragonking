@@ -1,0 +1,14 @@
+Performing system checks...
+
+System check identified no issues (0 silenced).
+June 06, 2020 - 02:57:56
+Django version 3.0.6, using settings 'server.settings'
+Starting development server at http://0:3389/
+Quit the server with CONTROL-C.
+Performing system checks...
+
+System check identified no issues (0 silenced).
+June 06, 2020 - 02:58:14
+Django version 3.0.6, using settings 'server.settings'
+Starting development server at http://0:3389/
+Quit the server with CONTROL-C.
