@@ -11,3 +11,4 @@ client/
 server/server/settings.py
 
 *.txt
+*.docx
