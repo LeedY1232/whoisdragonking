@@ -244,7 +244,7 @@ insert into dragonking_punishcard values (239,'对着门外喊“打雷了,下�
 insert into dragonking_punishcard values (240,'对着门外喊“打雷了,下雨收衣服啊~”',1,'challenge',false,2);
 insert into dragonking_punishcard values (241,'对着门外喊“打雷了,下雨收衣服啊~”',1,'challenge',false,3);
 insert into dragonking_punishcard values (242,'帮离你最远的同性脱下最外面一件衣服,然后再帮其穿上。',1,'challenge',false,1);
-insert into dragonking_punishcard values (242,'帮离你最远的同性脱下最外面一件衣服,然后再帮其穿上。',1,'challenge',false,2);
+insert into dragonking_punishcard values (429,'帮离你最远的同性脱下最外面一件衣服,然后再帮其穿上。',1,'challenge',false,2);
 insert into dragonking_punishcard values (243,'帮离你最远的异性脱下最外面一件衣服,然后再帮其穿上。',1,'challenge',false,3);
 insert into dragonking_punishcard values (244,'与从你左手边数起第二位同性喝交杯酒。',2,'challenge',false,1);
 insert into dragonking_punishcard values (245,'与从你左手边数起第二位同性喝交杯酒。',2,'challenge',false,2);
@@ -313,9 +313,9 @@ insert into dragonking_punishcard values (307,'和左边第一个异性换穿上
 insert into dragonking_punishcard values (308,'选一个同性说：我将把你紧紧地搂在怀中，吻你亿万次，像在赤道上面那样炽烈的吻。（拿破仑致约瑟芬）',2,'challenge',false,1);
 insert into dragonking_punishcard values (309,'选一个同性说：我将把你紧紧地搂在怀中，吻你亿万次，像在赤道上面那样炽烈的吻。（拿破仑致约瑟芬）',2,'challenge',false,2);
 insert into dragonking_punishcard values (400,'选一名异性说：我将把你紧紧地搂在怀中，吻你亿万次，像在赤道上面那样炽烈的吻。（拿破仑致约瑟芬）',2,'challenge',false,3);
-insert into dragonking_punishcard values (401,'选择一名同性与其上演《罗密欧与朱丽叶》的的一个片段（自行选择）',3'challenge',false,1)
-insert into dragonking_punishcard values (402,'选择一名同性与其上演《罗密欧与朱丽叶》的的一个片段（自行选择）',3'challenge',false,2)
-insert into dragonking_punishcard values (403,'选择一名异性与其上演《罗密欧与朱丽叶》的的一个片段（自行选择）',3'challenge',false,3)
+insert into dragonking_punishcard values (401,'选择一名同性与其上演《罗密欧与朱丽叶》的的一个片段（自行选择）',3,'challenge',false,1);
+insert into dragonking_punishcard values (402,'选择一名同性与其上演《罗密欧与朱丽叶》的的一个片段（自行选择）',3,'challenge',false,2);
+insert into dragonking_punishcard values (403,'选择一名异性与其上演《罗密欧与朱丽叶》的的一个片段（自行选择）',3,'challenge',false,3);
 insert into dragonking_punishcard values (404,'逐个夸一夸在座的异性，要根据对方的特点来。',2,'challenge',false,3);
 insert into dragonking_punishcard values (405,'挑在座的一位，说一说ta做过让你印象最深的事',2,'challenge',false,1);
 insert into dragonking_punishcard values (406,'挑在座的一位，说一说ta做过让你印象最深的事',2,'challenge',false,2);
