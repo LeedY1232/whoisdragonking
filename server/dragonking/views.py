@@ -250,13 +250,13 @@ def showPunishedStatusforOthers(request):
     if len(houseuser_objs) != 0:
         for houseuser_obj in houseuser_objs:
             if houseuser_obj.user_openid.if_being_punished:
-                punishchoose_obj = PunishChoose.objects.filter(user_openid = houseuser_obj.user_openid).first()
-                if len(punishchoose_obj) == 0:
-                    return JsonResponse({'code':'-1','message':'正在选择惩罚中'})
-                else:
-                    card_serializer = PunishCardSerializer(punishchoose_obj.card_id)
+                punishchoose_obj = PunishChoose.objects.filter(user_openid = houseuser_obj.user_openid)
+                if len(punishchoose_obj) > 0:
+                    card_serializer = PunishCardSerializer(punishchoose_obj[0].card_id)
                     punishuser_info['card_info'] = card_serializer.data
                     punishuser_info['user_openid'] = houseuser_obj.user_openid.openid
+                else:
+                    return JsonResponse({'code':'-1','message':'正在选择惩罚中'})
             else:
                 temp+=1
         if temp == len(houseuser_objs):

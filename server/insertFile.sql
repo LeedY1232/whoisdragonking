@@ -313,9 +313,15 @@ insert into dragonking_punishcard values (307,'和左边第一个异性换穿上
 insert into dragonking_punishcard values (308,'选一个同性说：我将把你紧紧地搂在怀中，吻你亿万次，像在赤道上面那样炽烈的吻。（拿破仑致约瑟芬）',2,'challenge',false,1);
 insert into dragonking_punishcard values (309,'选一个同性说：我将把你紧紧地搂在怀中，吻你亿万次，像在赤道上面那样炽烈的吻。（拿破仑致约瑟芬）',2,'challenge',false,2);
 insert into dragonking_punishcard values (400,'选一名异性说：我将把你紧紧地搂在怀中，吻你亿万次，像在赤道上面那样炽烈的吻。（拿破仑致约瑟芬）',2,'challenge',false,3);
+<<<<<<< HEAD
 insert into dragonking_punishcard values (401,'选择一名同性与其上演《罗密欧与朱丽叶》的的一个片段（自行选择）',3,'challenge',false,1)
 insert into dragonking_punishcard values (402,'选择一名同性与其上演《罗密欧与朱丽叶》的的一个片段（自行选择）',3'challenge',false,2)
 insert into dragonking_punishcard values (403,'选择一名异性与其上演《罗密欧与朱丽叶》的的一个片段（自行选择）',3'challenge',false,3)
+=======
+insert into dragonking_punishcard values (401,'选择一名同性与其上演《罗密欧与朱丽叶》的的一个片段（自行选择）',3,'challenge',false,1);
+insert into dragonking_punishcard values (402,'选择一名同性与其上演《罗密欧与朱丽叶》的的一个片段（自行选择）',3,'challenge',false,2);
+insert into dragonking_punishcard values (403,'选择一名异性与其上演《罗密欧与朱丽叶》的的一个片段（自行选择）',3,'challenge',false,3);
+>>>>>>> 1300815c9f036c9d77d1a989f2dd66dcc1609e32
 insert into dragonking_punishcard values (404,'逐个夸一夸在座的异性，要根据对方的特点来。',2,'challenge',false,3);
 insert into dragonking_punishcard values (405,'挑在座的一位，说一说ta做过让你印象最深的事',2,'challenge',false,1);
 insert into dragonking_punishcard values (406,'挑在座的一位，说一说ta做过让你印象最深的事',2,'challenge',false,2);
