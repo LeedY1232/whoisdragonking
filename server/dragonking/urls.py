@@ -24,5 +24,6 @@ urlpatterns = [
     path(r'showPunishedStatusforOthers/',views.showPunishedStatusforOthers),
     path(r'changePunish/',views.changePunish),
     path(r'acceptPunish/',views.acceptPunish),
+    path(r'newUserLogin/',views.newUserLogin),
 ]
 

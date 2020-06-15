@@ -44,6 +44,20 @@ class HouseUserView(viewsets.ModelViewSet):
     serializer_class = HouseUserSerializer
 
 
+def newUserLogin(request):
+    code = request.GET.get("code")
+    wxurl = 'https://api.weixin.qq.com/sns/jscode2session'
+    data = {
+        'appid':'wx7e7fa404e4354e31',
+        'secret':'6ca744e158717b09fd8e6591629a7672',
+        'js_code': code,
+        'grant_type': 'authorization_code',
+    }
+    wxres = requests.post(wxurl,data=data)
+    user_openid = json.loads(wxres.text)['openid']
+    return JsonResponse({'openid':user_openid,'message':'success'})
+
+
 def userLogin(request):
     user_openid = request.GET.get("openid")
     saved_user = User.objects.filter(openid=user_openid).first()
