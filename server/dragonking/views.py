@@ -81,13 +81,16 @@ def userLogin(request):
 
 def buildHouse(request):  # 获取创建人openid，返回房间id号
     openid = request.GET.get('openid')
+    kind = int(request.GET.get('gender_kind'))
+    if kind == None:
+        kind = 3
     user = User.objects.filter(openid=openid).first()
     user.if_inhouse = True
     house_id = random.randint(100000, 999999)
     while len(House.objects.filter(house_id=house_id)) != 0:
         house_id = random.randint(100000, 999999)
     new_house = House.objects.create(
-        house_id=house_id, house_owner=user)
+        house_id=house_id, house_owner=user,gender_kind = kind)
     new_house.save()
     return JsonResponse({'house_id': new_house.house_id, 'message': '成功创建房间'})
 
@@ -137,7 +140,9 @@ def startGame(request):
 def punishCardIndex(request): # 提供6个惩罚
     # candidate values： truth or challenge
     punish_way = request.GET.get('way_for_punishing')
-    card_list = PunishCard.objects.filter(kind=punish_way)
+    house_id = request.GET.get('house_id')
+    house_obj = House.objects.filter(house_id=house_id).first()
+    card_list = PunishCard.objects.filter(kind=punish_way,gender = house_obj.gender_kind)
     card_index = []
     index = random.sample(range(0, len(card_list)), 6)  # 从数组范围内生成六个不等的随机数
     for i in range(6):
