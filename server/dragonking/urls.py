@@ -19,6 +19,8 @@ urlpatterns = [
     path(r'punishCardIndex/',views.punishCardIndex),
     path(r'choosePunish/',views.choosePunish),
     path(r'leaveHouse/',views.leaveHouse),
+    path(r'leaveHouse2/',views.leaveHouse2),
+    path(r'leaveHouse3/',views.leaveHouse3),
     path(r'punishCardIndexAllVersion/',views.punishCardIndexAllVersion),
     path(r'userInfoaboutHouse/',views.userInfoaboutHouse),
     path(r'showPunishedStatusforOthers/',views.showPunishedStatusforOthers),
