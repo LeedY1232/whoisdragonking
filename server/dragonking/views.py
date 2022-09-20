@@ -196,6 +196,7 @@ def acceptPunish(request):
     user_obj.save()
     return JsonResponse({'code':'1','message':'用户接受了这一惩罚，进入下一轮'})
 
+
 def leaveHouse(request):  # 用户离开房间
     house_id = request.GET.get('house_id')
     house_obj = House.objects.filter(house_id=house_id).first()
@@ -204,51 +205,15 @@ def leaveHouse(request):  # 用户离开房间
     user_obj.if_inhouse = False
     user_obj.if_ready = False
     user_obj.if_being_punished = False
-    this_houseuser_obj = HouseUser.objects.filter(user_openid=user_obj)
-    this_houseuser_obj.delete()
-    the_house_obj_owner_has = House.objects.filter(house_owner=user_obj)# 删掉该用户是房主的所有房间
-    the_house_obj_owner_has.delete()
-    punish_choose_obj = PunishChoose.objects.filter(user_openid=user_obj)#删掉该用户所有已经选择的卡片
-    punish_choose_obj.delete()
-    user_obj.save()
-    return JsonResponse({'code': '1', 'message': '退出成功'})
-
-def leaveHouse2(request):  # 用户离开房间,该函数被废弃
-    house_id = request.GET.get('house_id')
-    house_obj = House.objects.filter(house_id=house_id).first()
-    user_id = request.GET.get('openid')
-    user_obj = User.objects.filter(openid=user_id).first()
-    user_obj.if_inhouse = False
-    user_obj.if_ready = False
-    user_obj.if_being_punished = False
-    this_houseuser_obj = HouseUser.objects.filter(user_openid=user_obj)
-    this_houseuser_obj.delete()
-    if user_obj == house_obj.house_owner:  # 如果用户是房主的话，则顺带把房间删了
+    if user_obj != house_obj.house_owner:
+        this_houseuser_obj = HouseUser.objects.filter(
+            house_id=house_obj, user_openid=user_obj)
+        this_houseuser_obj.delete()
+    else:  # 如果用户是房主的话，则退回初始状态
         house_obj.delete()
     user_obj.save()
     return JsonResponse({'code': '1', 'message': '退出成功'})
 
-def leaveHouse3(request):  # 用户创建房间时，将该用户名下其它房间删掉，并对该用户进行初始化
-    house_id = request.GET.get('house_id')
-    house_obj = House.objects.filter(house_id=house_id).first()
-    user_id = request.GET.get('openid')
-    user_obj = User.objects.filter(openid=user_id).first()
-    user_obj.if_inhouse = False
-    user_obj.if_ready = False
-    user_obj.if_being_punished = False
-    this_houseuser_obj = HouseUser.objects.filter(user_openid=user_obj)
-    this_houseuser_obj.delete()
-
-    the_house_obj_owner_has = House.objects.filter(house_owner=user_obj)# 删掉该用户是房主的所有房间
-    #the_house_obj_owner_has.delete()
-    for obj in the_house_obj_owner_has:
-        if obj.house_id != int(house_id):
-            obj.delete()
-
-    punish_choose_obj = PunishChoose.objects.filter(user_openid=user_obj)#删掉该用户所有已经选择的卡片
-    punish_choose_obj.delete()
-    user_obj.save()
-    return JsonResponse({'code': '1', 'message': '退出成功','houseId':house_id})
 
 def punishCardIndexAllVersion(request):
     gender = request.GET.get('gameType')
